@@ -1,0 +1,108 @@
+<?php require('template/header.phtml') ?>
+<div class="col-md-3 col-md-offset-9">
+    <form class="navbar-form" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+        <div class="input-group">
+            <input type="search" class="form-control" placeholder="Search Titles..." name="searchTopic"
+            <?php if (isset($_POST['searchTopic'])) {
+                echo htmlentities($_POST['searchTopic']);
+            } ?> required/>
+            <div class="input-group-btn">
+                <button class="btn btn-primary" type="submit" name="searchBtn"><i class="glyphicon glyphicon-search"></i></button>
+            </div>
+        </div>
+        <ul class="list-group" id="txtHint"></ul>
+    </form>
+</div>
+<?php
+if (isset($view->login) && isset($_SESSION['uname'])) {
+    echo  '<div style="text-align: center;">' . $view->login . '</div>';
+    ?>
+    <div class="container-fluid">
+        <form id="welcomeForm" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-xs-4 col-md-2">
+                        <input type="button" value="Add Topic" name="addTopic" class="btn btn-info" onclick="window.location.href = 'topic.php'"/>
+                    </div>
+                    <div class="col-xs-4 col-md-1">
+                        <input type="button" value="View Profile" name="profile" class="btn btn-info" onclick="window.location.href = 'profile.php'"/>
+                    </div>
+                    <div class="col-xs-4 col-md-push-8">
+                        <input type="submit" value="logout" name="logout" class="btn btn-danger"/>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <?php
+}
+else {?>
+    <?php if (isset($view->invalid))
+        echo $view->invalid;
+} ?>
+<div class="col-md-12">
+    <h3>Welcome!!! Registered users can post anime or manga titles here</h3>
+</div>
+<?php
+if(isset($view->dbError)){
+    echo $view->dbError;
+}
+else { ?>
+    <form id="topicForm" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+        <div class="container-fluid">
+            <div class="col-md-12">
+            <div id="topicTitles">
+                <div class="col-md-4 col-xs-4"><h4><b>Title:</b></h4></div>
+                <div class="col-md-6 col-xs-6"><h4><b>Description:</b></h4></div>
+                <div class="col-md-2 col-xs-2"><h4><b>Posted by:</b></h4></div>
+            </div>
+            </div>
+            <?php
+            if (isset($view->searchedTopic)) {
+                foreach ($view->searchedTopic as $topicData) {
+                    echo '<div class="col-md-12 col-xs-12"> <div class="col-md-4 col-xs-4"><a href="post.php? topicID=' . $topicData->getTopicID() . '"><h5 style="font-family:Impact;">' . $topicData->getTitle() . '</h5></a></div> <div class="col-md-6 col-xs-6"> ' . $topicData->getDescription() . '</div> <div class="col-md-2 col-xs-2">' . $topicData->getUsername() . '</div> </div>';
+                }
+            } else {
+                foreach ($view->topicDataSet as $topicData) {
+                    echo '<div class="col-md-12 col-xs-12"> <div class="col-md-4 col-xs-4"><a href="post.php? topicID=' . $topicData->getTopicID() . '"><h5 style="font-family:Bookman Old Style;">' . $topicData->getTitle() . '</h5></a></div> <div class="col-md-6 col-xs-6"> ' . $topicData->getDescription() . '</div> <div class="col-md-2 col-xs-2">' . $topicData->getUsername() . '</div> </div>';
+                }
+            }
+            ?>
+        </div>
+        <ul class="pagination">
+            <?php
+            $totalPages = $view->totalPages;
+            if (isset($_GET['pageNo'])) {
+                $pageNumber = $_GET['pageNo'];
+            } else {
+                $pageNumber = 1;
+            }
+            ?>
+            <li><a href="?pageNo=1">First</a></li>
+            <li class="<?php
+            if ($pageNumber <= 1) {
+                echo 'disabled';
+            } ?>">
+                <a href="<?php
+                if ($pageNumber <= 1) {
+                    echo '#';
+                } else {
+                    echo "?pageNo=" . ($pageNumber - 1);
+                } ?>">Prev</a></li>
+            <li class="<?php
+            if ($pageNumber >= $totalPages) {
+                echo 'disabled';
+            } ?>">
+                <a href="<?php
+                if ($pageNumber >= $totalPages) {
+                    echo '#';
+                } else {
+                    echo "?pageNo=" . ($pageNumber + 1);
+                } ?>">Next</a>
+            </li>
+            <li><a href="?pageNo=<?php echo $totalPages; ?>">Last</a></li>
+        </ul>
+    </form>
+    <?php
+}?>
+<?php require('template/footer.phtml') ?>

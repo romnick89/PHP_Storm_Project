@@ -1,0 +1,31 @@
+<?php require('template/header.phtml') ?>
+<div class="container-fluid">
+    <div class="centered-form">
+        <div class="col-xs-12 col-md-8 col-md-offset-2">
+            <div id="panelAboutUs" class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">About Us</h3>
+                </div>
+                <div class="panel-body">
+                    <form role="form" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+                        <div id="aboutUsInfo">
+                            <p><i>This is a forum about Manga or Anime where users can post their comments and reactions
+                            on certain topics. Users needs to be registered to be able to post comments and create topics.
+                            You can add manga or anime titles in the topics sections where other members can post subject about
+                                    it. If registered you can also add post to your watch list to keep an eye on a certain topic</i></p>
+                            <p><i>The purpose of this site is to help fans of anime or manga discuss anything about it. Please be
+                                friendly to all our members and please write appropriate language and do not flood our forum about topics or
+                                    information that are not related to this site. Thank you very much and enjoy our forum.</i></p>
+                        </div>
+                        <div class="form-group">
+                            <input type="button" value="Return to home" name="returnToHome" class="btn btn-info btn-block" onclick="window.location.href = 'index.php'"/>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php require('template/footer.phtml') ?>

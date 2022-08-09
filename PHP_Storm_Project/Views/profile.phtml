@@ -1,0 +1,71 @@
+<?php require('template/header.phtml') ?>
+<?php
+if (isset($view->addPhoto)) {
+    echo "<h4 style='color: darkgreen;'>" . $view->addPhoto . '</h4>';
+    ?>
+    <div class="col-md-4">
+        <h4><a href="profile.php?">View Profile</a></h4>
+    </div>
+    <?php
+}
+else {
+    ?>
+    <div class="container-fluid">
+        <form id="postForm" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" enctype="multipart/form-data">
+            <div id="profileBtn" class="row">
+                <div class="col-xs-8 col-md-6">
+                    <input type="button" value="Return to topics" name="return" class="btn btn-warning" onclick="window.location.href = 'index.php'"/>
+                </div>
+                <div class="col-xs-4 col-md-2">
+                    <input type="button" value="Inbox" name="inbox" class="btn btn-info" onclick="window.location.href = 'inbox.php'"/>
+                </div>
+            </div>
+            <?php
+            if (isset($view->errors)) {
+                echo $view->errors;
+            }
+            ?>
+            <div class="row">
+                <table class="table table-responsive table-hover">
+                    <tbody>
+                    <?php foreach ($view->userDetails as $user) {
+                        echo '<div class="profile-img"><img src="images/' . $user->getPhotoName() . '" width="210" height="150" alt="" /><br/>' .
+                            '<button type="submit" class="file btn btn-info" name="upload">Add Photo<input type="file" name="image"></button></div>' .
+                            '<tr><tr><td style="font-family: Impact;">UserID:</td><td>' . $user->getUserID() .
+                            '</td></tr> <tr><td style="font-family: Impact;">First Name: </td><td>'. $user->getFirstName()  .
+                            '</td></tr> <tr><td style="font-family: Impact;">Last Name: </td><td>' . $user->getLastName() .
+                            '</td></tr> <tr><td style="font-family: Impact;">Username: </td><td>' . $user->getUsername().
+                            '</td></tr> <tr><td style="font-family: Impact;">Email: </td><td>' . $user->getEmail().
+                            '</td></tr> </tr>';
+                    } ?>
+                    </tbody>
+                </table>
+                <input type="button" value="Change Password" name="changePassword" class="btn btn-success" onclick="window.location.href = 'editPassword.php'"/>
+            </div>
+        </form>
+    </div>
+    <div class="container-fluid">
+        <form id="postTitlesForm" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+            <table class="table table-responsive table-hover">
+                <thead>
+                <th style="font-family: Arial Black;"><h4>Your Watch List:</h4></th>
+                </thead>
+                <tbody>
+                <?php
+                if (isset($view->titles)) {
+                    foreach ($view->titles as $topics) {
+                        echo '<tr> <td><a href="post.php? topicID=' . $topics->getTopicID() . '"><h4>' . $topics->getTitle() . '</h4></a></td> <td><a href="watchList.php? watchListID=' . $topics->getWatchListID() . '"><p style="color: darkred;">unsubscribe</p></a></td> </tr>';
+                    }
+                }
+                if (isset($view->noWatchList))
+                    echo $view->noWatchList;
+                ?>
+                </tbody>
+            </table>
+        </form>
+    </div>
+    <?php
+} ?>
+
+
+<?php require('template/footer.phtml') ?>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+
+    <!-- Bootstrap core CSS -->
+    <link href="/css/bootstrap.css" rel="stylesheet">
+    <!-- Bootstrap theme -->
+    <link href="/css/bootstrap-theme.css" rel="stylesheet">
+    <link href="/css/my-style.css" rel="stylesheet">
+    <!-- reCaptcha by google -->
+    <script src='https://www.google.com/recaptcha/api.js' async defer></script>
+
+
+    <title>Forum - <?php echo $view->pageTitle; ?></title>
+</head>
+
+<body role="document">
+
+<div class="container">
+        <div  class="row">
+            <div id="title" class="col-xs-12">
+                <!-- image from: https://www.seekpng.com/ipng/u2w7q8u2w7o0r5w7_black-homunculus-symbol-fullmetal-alchemist-stickers-full-metal/ -->
+                <img src="images/fullmetal-alchemist-logo.png" alt="Salford University" />
+                    <div class="pull-right"> <h1><?php echo $view->pageTitle ?> </h1></div>
+            </div>
+        </div>
+
+    <div class="row">
+        <nav id="navigation" class="navbar navbar-inverse">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#menu">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="menu">
+                <ul class="nav navbar-nav">
+                    <li><a href="index.php">Home</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="signup.php"><i class="glyphicon glyphicon-user"></i> Sign Up</a></li>
+                    <li><a href="aboutUs.php" ><i class="glyphicon glyphicon-question-sign"></i> About Us</a></li>
+                    <li><a id="loginBtn" data-toggle="modal" data-target="#loginModal" href="#" ><span  class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-login" id="loginModal">Please login with your email and password</h4>
+                        <small>Not Registered?</small><a href="signup.php"> register here </a>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="loginForm" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+                            <div class="form-group">
+                                <label for="username" class="col-form-label">Email:</label>
+                                <input type="text" class="form-control" name="email"
+                                <?php if (isset($_POST['email'])) {
+                                    echo htmlentities($_POST['email']);
+                                } ?> />
+                            </div>
+                            <div class="form-group">
+                                <label for="password" class="col-form-label">Password:</label>
+                                <input type="password" class="form-control" name="password"
+                                <?php if (isset($_POST['password'])) {
+                                    echo htmlentities($_POST['password']);
+                                } ?> />
+                            </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button"  class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <input type="submit" value="Login" name="login" class="btn btn-primary" />
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div id="content" class="col-xs-4 col-sm-8 col-md-10">
+
+

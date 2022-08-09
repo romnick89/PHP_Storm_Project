@@ -1,0 +1,224 @@
+<?php require('template/header.phtml') ?>
+<?php
+if (isset($view->addComment)) {
+    echo '<h4 style="color: darkgreen">' . $view->addComment . '</h4>';
+    ?><div class="col-md-4"><h4><a href="post.php?">View Comment</a></h4></div><?php
+}
+elseif (isset($view->watchlist)) {
+    echo $view->watchlist;
+    ?>
+    <div class="col-md-4">
+        <h4><a href="profile.php?">View my watch list</a></h4>
+    </div>
+    <div class="col-md-4">
+        <h4><a href="post.php?">Return to post</a></h4>
+    </div>
+    <?php
+}
+else {?>
+    <div class="col-md-3 col-md-offset-9">
+        <form class="navbar-form" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+            <div class="input-group">
+                <input type="search" class="form-control" placeholder="Search <?php echo $view->title . '...'; ?>" name="searchPost" id="search" onkeyup="showHint(this.value)"
+                    <?php if (isset($_POST['searchPost'])) {
+                        echo htmlentities($_POST['searchPost']);
+                    } ?> required/>
+                <div class="input-group-btn">
+                    <button class="btn btn-primary" type="submit" name="searchPostBtn"><i class="glyphicon glyphicon-search"></i></button>
+                </div>
+            </div>
+            <ul class="list-group" id="txtHint"></ul>
+        </form>
+        <script>
+            function showHint(string) {
+                if (string.length == 0) {
+                    document.getElementById('txtHint').innerHTML = "";
+                    return;
+                }
+                else {
+                    var xmlhttp = new XMLHttpRequest();
+
+                    xmlhttp.onreadystatechange = function() {
+                        if (this.readyState == 4 && this.status == 200) {
+                            //display suggestion on an input
+                            var uic = document.getElementById('txtHint');
+                            uic.innerHTML = this.responseText;
+
+                            if (this.response != "no posts") {
+                                uic.innerHTML = "";
+                                var posts = JSON.parse(this.responseText);
+                                posts.forEach(function (obj) {
+                                    uic.innerHTML += "<li class='list-group-item link-class'><a href='post.php? postID=" + obj.post_id + "'>" + obj.post_subject + "</a></li>";
+                                });
+                            }
+                        }
+                    }
+                    xmlhttp.open('GET', 'search.php?q=' + string, true);
+                    xmlhttp.send();
+                }
+            }
+        </script>
+    </div>
+    <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+        <?php
+        if (isset($view->title)){
+            echo '<h2 style="font-family:Impact;">'. $view->title . '</h2>';
+        }
+
+        if (isset($view->noComments)) {
+            echo '<h4>'. $view->noComments . '</h4>';
+        }
+        else {
+            ?><h4>Here you can post discussions about the topic:</h4> <?php
+        }
+        ?>
+        <div class="row">
+        <div class="form-group col-xs-6 col-md-8" >
+            <input type="button" value="Return to topics" name="return" class="btn btn-warning" onclick="window.location.href = 'index.php'"/>
+        </div>
+            <?php
+            if (isset($_SESSION['uname'])) {
+                echo '<div class="form-group col-xs-2 col-md-4"><input class="btn btn-info" type="submit" value="Add To Watch List" name="watchListBtn"/></div>';
+            }
+            ?>
+        </div>
+    </form>
+    <div class="container-fluid">
+        <form id="PostForm" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+            <table class="table table-responsive table-bordered ">
+                <thead>
+                <tr>
+                    <th><h4>Comments:</h4></th><th><h4>Posted by:</h4></th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php if (isset( $view->searchedPost) ) {
+                    foreach ($view->searchedPost as $postData) {
+                        if (isset($_SESSION['uname'])) {
+                            echo '<tr> <td><b>' . $postData->getPostSubject() . '</b><br/>'.
+                                $postData->getPostContent()  . '<br/>' .
+                                $postData->getPostDate() . '</td> <td>' .
+                                '<img src="images/' . $postData->getPhotoName() . '" width="50" height="50" alt="" />' .
+                                '<br/><h4 style="font-family: Impact;">' . $postData->getUsername() . '</h4><a href="reply.php? postID=' . $postData->getPostID() . '">view comments</a> </td></tr>';
+
+                        }
+                        else {
+                            echo '<tr> <td><b>' . $postData->getPostSubject() . '</b><br/>'.
+                                $postData->getPostContent()  . '<br/>' .
+                                $postData->getPostDate() . '</td> <td>' .
+                                '<h4 style="font-family: Impact;">'. $postData->getUsername()  . '</h4><a href="reply.php? postID=' . $postData->getPostID() . '">view comments</a> </td></tr>';
+                        }
+                    }
+                }
+                elseif (isset($view->displayPost)) {
+                    foreach ($view->displayPost as $postData) {
+                        if (isset($_SESSION['uname'])) {
+                            echo '<tr> <td><b>' . $postData->getPostSubject() . '</b><br/>'.
+                                $postData->getPostContent()  . '<br/>' .
+                                $postData->getPostDate() . '</td> <td>' .
+                                '<img src="images/' . $postData->getPhotoName() . '" width="50" height="50" alt="" />' .
+                                '<br/><h4 style="font-family: Impact;">' . $postData->getUsername() . '</h4><a href="reply.php? postID=' . $postData->getPostID() . '">view comments</a> </td></tr>';
+
+                        }
+                        else {
+                            echo '<tr> <td><b>' . $postData->getPostSubject() . '</b><br/>'.
+                                $postData->getPostContent()  . '<br/>' .
+                                $postData->getPostDate() . '</td> <td>' .
+                                '<h4 style="font-family: Impact;">'. $postData->getUsername()  . '</h4><a href="reply.php? postID=' . $postData->getPostID() . '">view comments</a> </td></tr>';
+                        }
+                    }
+                }
+                else {
+                    foreach ($view->postDataSet as $postData) {
+                        if (isset($_SESSION['uname'])) {
+                            echo '<tr> <td><b>' . $postData->getPostSubject() . '</b><br/>'.
+                                $postData->getPostContent()  . '<br/>' .
+                                $postData->getPostDate() . '</td> <td>' .
+                                '<img src="images/' . $postData->getPhotoName() . '" width="50" height="50" alt="" />' .
+                                '<br/><h4 style="font-family: Impact;">' . $postData->getUsername() . '</h4><a href="reply.php? postID=' . $postData->getPostID() . '">view comments</a> </td></tr>';
+
+                        }
+                        else {
+                            echo '<tr> <td><b>' . $postData->getPostSubject() . '</b><br/>'.
+                                $postData->getPostContent()  . '<br/>' .
+                                $postData->getPostDate() . '</td> <td>' .
+                                '<h4 style="font-family: Impact;">'. $postData->getUsername()  . '</h4><a href="reply.php? postID=' . $postData->getPostID() . '">view comments</a> </td></tr>';
+                        }
+                    }
+                }
+                 ?>
+                </tbody>
+            </table>
+        </form>
+    </div>
+    <?php if (isset($_SESSION['uname'])) {
+        ?>
+        <div class="container-fluid">
+            <form id="commentForm" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+                <?php
+                if (isset($view->errors)) {
+                    foreach ($view->errors as $error) : ?>
+                        <li style='color: darkred'><?php echo $error; ?></li>
+                    <?php endforeach;
+                } ?>
+                <div class="row">
+                    <div class="form-group col-md-6 col-md-offset-3">
+                        <input class="form-control"  name="subject" placeholder="subject here..." type="text"
+                            <?php if (isset($_POST['subject'])) {
+                                echo htmlentities($_POST['subject']);
+                            } ?>/>
+                    </div>
+                    <div class="form-group col-md-6 col-md-offset-3">
+                        <textarea class="form-control" name="comment" placeholder="comments here..." rows="5"
+                        <?php if (isset($_POST['comment'])) {
+                            echo htmlentities($_POST['comment']);
+                        } ?>></textarea>
+                    </div>
+                    <div class="form-group col-md-6 col-md-offset-5">
+                        <input type="submit" value="Add Comment" name="addComment" class="btn btn-primary"/>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <?php
+    } ?>
+        <div class="container-fluid">
+            <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="get">
+                <ul class="pagination">
+                    <?php
+                    $totalPages = $view->numberOfPages;
+                    if (isset($_GET['pageNumber'])) {
+                        $pageNumber = $_GET['pageNumber'];
+                    } else {
+                        $pageNumber = 1;
+                    }
+                    ?>
+                    <li><a href="?pageNumber=1">First</a></li>
+                    <li class="<?php
+                    if ($pageNumber <= 1) {
+                        echo 'disabled';
+                    } ?>">
+                        <a href="<?php
+                        if ($pageNumber <= 1) {
+                            echo '#';
+                        } else {
+                            echo "?pageNumber=" . ($pageNumber - 1);
+                        } ?>">Prev</a></li>
+                    <li class="<?php
+                    if ($pageNumber >= $totalPages) {
+                        echo 'disabled';
+                    } ?>">
+                        <a href="<?php
+                        if ($pageNumber >= $totalPages) {
+                            echo '#';
+                        } else {
+                            echo "?pageNumber=" . ($pageNumber + 1);
+                        } ?>">Next</a>
+                    </li>
+                    <li><a href="?pageNumber=<?php echo $totalPages; ?>">Last</a></li>
+                </ul>
+            </form>
+        </div>
+    <?php
+} ?>
+<?php require('template/footer.phtml') ?>

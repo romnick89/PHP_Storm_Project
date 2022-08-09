@@ -1,0 +1,147 @@
+article, aside details, figcaption, figure, footer, header,
+hgroup, menu, nav, section {
+    display: block;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+#title {
+    margin-top: 12px;
+    color: white;
+}
+/*background image source from: <a href="https://wall.alphacoders.com/big.php?i=111726"><img src="https://images4.alphacoders.com/111/111726.jpg"></a> */
+body {
+    background-image: url("../images/miku_girl.jpg");
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+#navigation {
+    color: #fff;
+    margin: auto;
+    padding-right: 15px;
+}
+
+#menu a {
+    color: #fff;
+    text-decoration: none;
+    display: block;
+}
+#menu a:hover {
+    background-color: #444444;
+    color: #ddd;
+    display: block;
+}
+
+#content {
+    height: auto;
+    width: 100%;
+    background-color: lightgrey;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#footer {
+    margin_top: 20px;
+    text-align: center;
+    background: rgb(0, 0, 0);
+    background: rgba(0, 0, 0, .5);
+    color: #fff;
+}
+
+#replyBox {
+    width: 150%;
+}
+#aboutUsInfo {
+    padding: 30px;
+}
+#panelAboutUs {
+    width: 100%;
+}
+#panelSignUp {
+    width: 150%;
+}
+.centered-form {
+    margin-top: 30px;
+}
+.centered-form .panel {
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: rgba(0, 0, 0, 0.3) 20px 20px 20px;
+}
+
+#userPost {
+    float: right;
+}
+
+#postSubject {
+    text-align: center;
+}
+
+@media screen and (max-width: 400px) {
+
+    #lastNameTxtBox {
+        width: 100%;
+    }
+    #passwordTxtBox {
+        width: 100%;
+    }
+    #captcha {
+        width: 100%;
+        overflow: auto;
+    }
+    #content {
+        font-size: x-small;
+    }
+}
+
+#searchBar {
+    position: relative;
+}
+#searchGlyph {
+    margin-bottom: 100px;
+}
+#searchBar {
+    position: relative;
+}
+input[type=search] {
+    background-color: white;
+}
+input[type=search]:focus {
+    background-color: #b9def0;
+}
+
+.profile-img {
+    margin: 20px;
+}
+.profile-img .file {
+    border: none;
+    border-radius: 0;
+    font-size: 10px;
+}
+#txtHint {
+    position: absolute;
+    width: 78%;
+    max-width:700px;
+    cursor: pointer;
+    overflow-y: auto;
+    max-height: 300px;
+    box-sizing: border-box;
+    z-index: 1001;
+}
+.link-class:hover{
+    background-color:#f1f1f1;
+}
+
+
+
+
+
+

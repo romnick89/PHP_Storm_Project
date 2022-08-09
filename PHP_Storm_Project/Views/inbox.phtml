@@ -1,0 +1,88 @@
+<?php require('template/header.phtml') ?>
+<?php
+if (isset($view->messageDeleted)) {
+    echo "<h4 style='color: darkred;'>" . $view->messageDeleted . '</h4>';
+    ?>
+    <div class="col-md-4">
+        <h4><a href="inbox.php?">Return to Inbox</a></h4>
+    </div>
+    <?php
+}
+else { ?>
+    <form id="inboxForm" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+        <div class="row">
+            <div class="col-xs-2">
+                <input type="button" value="back" name="back" class="btn btn-warning" onclick="window.location.href = 'profile.php'"/>
+            </div>
+            <div class="col-xs-2 col-xs-offset-4">
+                <input type="button" value="create message" name="createMessage" class="btn btn-success" onclick="window.location.href = 'email.php'"/>
+            </div>
+        </div>
+        <div>
+            <h3>***Messages***</h3>
+        </div>
+        <table class="table table-responsive table-hover table-condensed">
+            <thead>
+            <tr>
+                <th><h4>Subject:</h4></th>
+                <th><h4>Content:</h4></th>
+                <th><h4>Sent by:</h4></th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php
+            if (isset($view->messages)) {
+                foreach ($view->messages as $message) {
+                    echo '<tr> <td>' . $message->getSubject() . '</td> <td>' . $message->getContent() . '</td> <td>' . $message->getSentBy() . '<br/>' . $message->getDate() . '</td> <td>';
+                    ?>
+                    <form action="" method="post">
+                        <input type="submit" name="delete" value="delete" class="btn-xs btn-danger"/><br/>
+                        <input type="hidden" name="messageID" value="<?php echo $message->getMessageID(); ?>"/>
+                    </form>
+                    </td></tr>
+                    <?php
+                }
+            } ?>
+            </tbody>
+        </table>
+
+    <form id="inboxForm" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="get">
+        <ul class="pagination">
+            <?php
+            $totalPages = $view->totalPages;
+            if (isset($_GET['pageNo'])) {
+                $pageNumber = $_GET['pageNo'];
+            } else {
+                $pageNumber = 1;
+            }
+            ?>
+            <li><a href="?pageNo=1">Newest</a></li>
+            <li class="<?php
+            if ($pageNumber <= 1) {
+                echo 'disabled';
+            } ?>">
+                <a href="<?php
+                if ($pageNumber <= 1) {
+                    echo '#';
+                } else {
+                    echo "?pageNo=" . ($pageNumber - 1);
+                } ?>">Prev</a></li>
+            <li class="<?php
+            if ($pageNumber >= $totalPages) {
+                echo 'disabled';
+            } ?>">
+                <a href="<?php
+                if ($pageNumber >= $totalPages) {
+                    echo '#';
+                } else {
+                    echo "?pageNo=" . ($pageNumber + 1);
+                } ?>">Next</a>
+            </li>
+            <li><a href="?pageNo=<?php echo $totalPages; ?>">Oldest</a></li>
+        </ul>
+    </form>
+    <?php
+} ?>
+<?php if (isset($view->noMessages))
+    echo $view->noMessages; ?>
+<?php require('template/footer.phtml') ?>

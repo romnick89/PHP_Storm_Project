@@ -1,0 +1,93 @@
+<?php require('template/header.phtml') ?>
+<?php
+if (isset($view->accountCreated)) {
+    echo "<h4 style='color: darkgreen'>". $view->accountCreated . "</h4>";
+    ?>
+    <div class="col-md-4">
+        <h4><a href="index.php?">Login</a></h4>
+    </div>
+    <?php
+}
+else {
+    ?>
+    <div class="container-fluid">
+        <div class="centered-form">
+            <div class="col-xs-8">
+                <div id="panelSignUp" class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Please fill in this form to create an account.<small> Free account </small></h3>
+                    </div>
+                    <div class="panel-body">
+                        <?php
+                        if (isset($view->errors)) {
+                            foreach ($view->errors as $error) : ?>
+                                <li style="color: darkred"><?php echo $error; ?></li>
+                            <?php endforeach;
+                        }
+                        ?>
+                        <form role="form" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+                            <div class="row">
+                                <div class="col-xs-6 col-sm-6 col-md-6">
+                                    <div class="form-group">
+                                        <input type="text" name="firstname" placeholder="First Name"
+                                            <?php if (isset($_POST['firstname'])) {
+                                                echo htmlentities($_POST['firstname']);
+                                            } ?> />
+                                    </div>
+                                </div>
+                                <div id="lastNameTxtBox" class="col-xs-6 col-sm-6 col-md-6">
+                                    <div class="form-group">
+                                        <input  type="text" name="lastname" placeholder="Last Name"
+                                            <?php if (isset($_POST['lastname'])) {
+                                                echo htmlentities($_POST['lastname']);
+                                            } ?> />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <input type="email" placeholder="Email Address" name="email"
+                                    <?php if (isset($_POST['email'])) {
+                                        echo htmlentities($_POST['email']);
+                                    } ?> />
+                            </div>
+                            <div class="form-group">
+                                <input type="text" placeholder="Username" name="username"
+                                    <?php if (isset($_POST['username'])) {
+                                        echo htmlentities($_POST['username']);
+                                    } ?> />
+                            </div>
+                            <div class="row">
+                                <div id="passwordTxtBox" class="col-xs-6 col-sm-6 col-md-6">
+                                    <div class="form-group">
+                                        <input type="password" placeholder="Password" name="password"
+                                            <?php if (isset($_POST['password'])) {
+                                                echo htmlentities($_POST['password']);
+                                            } ?> />
+                                    </div>
+                                </div>
+                                <div class="col-xs-6 col-sm-6 col-md-6">
+                                    <div class="form-group">
+                                        <input type="password" placeholder="Confirm Password" name="confirmPassword"
+                                            <?php if (isset($_POST['confirmPassword'])) {
+                                                echo htmlentities($_POST['confirmPassword']);
+                                            } ?> />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div id="captcha" class="g-recaptcha" data-sitekey="6LcFU8UUAAAAAJwNNmx8GfbmGFGA_Hz1JQ_AmZcn"></div>
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" value="&#x270e Register" name="register" class="btn btn-info btn-block"/>
+                                <input type="button" value="Cancel" name="cancel" class="btn btn-info btn-block" onclick="window.location.href = 'index.php'"/>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php
+} ?>
+
+<?php require('template/footer.phtml') ?>
